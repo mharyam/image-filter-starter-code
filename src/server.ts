@@ -47,17 +47,31 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     // call filterImageFromURL query to filter the image
     // validate if image URL exists
     if (!image_url){
-        return res.status(404).send("Bad request")
+        return res.status(400).send("Bad request")
     }
     let filteredpath = await filterImageFromURL(image_url);
 
-    res.sendFile(filteredpath);
+
     if (filteredpath){
-      console.log(filteredpath);
+      return res.sendFile(filteredpath);
       //deleteLocalFiles([filteredpath]);
     }
-  } );
+    else {
+      return res.status(400).send("Bad ")
+    }
+  });
   
+
+  // delete images enpoint
+  // Get all images in default folder and delete
+  app.get( "/delete-images", async ( req, res ) => {
+
+    // delete all files 
+    const fs = require('fs');
+    const files = fs.readdirSync("./src/util/tmp");
+    await deleteLocalFiles(files);
+    return res.status(200).send("files deleted succesfully");
+  });
 
   // Start the Server
   app.listen( port, () => {
