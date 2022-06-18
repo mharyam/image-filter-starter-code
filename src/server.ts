@@ -53,8 +53,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
 
     if (filteredpath){
-      return res.sendFile(filteredpath);
-      //deleteLocalFiles([filteredpath]);
+      return res.status(200).sendFile(filteredpath);
     }
     else {
       return res.status(400).send("Bad ")
